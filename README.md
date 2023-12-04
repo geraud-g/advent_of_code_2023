@@ -2,14 +2,14 @@
 
 This repository contains my solutions for [Advent of Code 2023](https://adventofcode.com/2023) implemented in Python.
 
-Each solution resides in its respective directory under `src`.
+Each solution resides in its respective directory.
 
 | Day    | Part 1 | Part 2 | Link             |
 |--------|:------:|:------:|------------------|
 | Day 01 |   ⭐    |   ⭐    | [Day 01](day_01) |
 | Day 02 |   ⭐    |   ⭐    | [Day 02](day_02) |
 | Day 03 |   ⭐    |   ⭐    | [Day 03](day_03) |
-| Day 04 |        |        |                  |
+| Day 04 |   ⭐    |   ⭐    | [Day 04](day_04) |
 | Day 05 |        |        |                  |
 | Day 06 |        |        |                  |
 | Day 07 |        |        |                  |
@@ -47,3 +47,9 @@ python main.py 1
 ```
 
 Modify the command to match the desired day.
+
+If you want to run the example inputs, you can add the `--example` flag:
+
+``` bash
+python main.py 1 --example
+```
