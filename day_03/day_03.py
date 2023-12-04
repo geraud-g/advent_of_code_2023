@@ -1,7 +1,7 @@
+from collections.abc import Iterable
 from itertools import product
-from typing import Optional, Iterable, Tuple, List
 
-Schematic = List[List[str]]
+Schematic = list[list[str]]
 
 
 def part_one(input_file: str) -> int:
@@ -32,9 +32,7 @@ def touch_symbol(schematic: Schematic, y: int, x: int) -> bool:
     return False
 
 
-def get_part_number(
-    schematic: Schematic, y: int, x: int, delete=False
-) -> Optional[int]:
+def get_part_number(schematic: Schematic, y: int, x: int, delete=False) -> int | None:
     """Returns the complete number from this tile as an `int`, or `None`.
 
     A complete number is the concatenation of the digits linked to the initial tile on the x-axis.
@@ -69,7 +67,7 @@ def part_two(input_file: str):
     return total
 
 
-def get_surrounding_numbers(schematic, y: int, x: int) -> List[int]:
+def get_surrounding_numbers(schematic, y: int, x: int) -> list[int]:
     numbers = []
     for tmp_y, tmp_x in get_tile_neighbours(y, x):
         value = get_part_number(schematic, tmp_y, tmp_x, delete=True)
@@ -88,13 +86,13 @@ def get_schematic(input_file: str) -> Schematic:
 
 def iterate_on_schematic(
     schematic: Schematic,
-) -> Iterable[Tuple[Tuple[int, int], str]]:
+) -> Iterable[tuple[tuple[int, int], str]]:
     for y, line in enumerate(schematic):
         for x, value in enumerate(line):
             yield (y, x), value
 
 
-def get_tile_neighbours(y: int, x: int) -> Iterable[Tuple[int, int]]:
+def get_tile_neighbours(y: int, x: int) -> Iterable[tuple[int, int]]:
     delta = [-1, 0, 1]
     for y_delta, x_delta in product(delta, delta):
         yield y + y_delta, x + x_delta

@@ -1,7 +1,6 @@
 from collections import defaultdict
-from typing import Set, List, Tuple
 
-Scratchcard = Tuple[Set[int], Set[int]]
+Scratchcard = tuple[set[int], set[int]]
 
 
 def part_one(input_file: str) -> int:
@@ -25,7 +24,7 @@ def part_two(input_file: str) -> int:
     return sum(scratchcards_count.values())
 
 
-def get_scratchcards(input_file: str) -> List[Scratchcard]:
+def get_scratchcards(input_file: str) -> list[Scratchcard]:
     scratchcards = []
     with open(input_file) as f:
         for line in f.readlines():

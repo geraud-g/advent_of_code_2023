@@ -1,6 +1,7 @@
 import importlib
+from typing import Annotated
+
 import typer
-from typing_extensions import Annotated
 
 
 def day_callback(value: int):
@@ -16,17 +17,17 @@ def main(day: Annotated[int, typer.Argument(callback=day_callback)], example: bo
 
         try:
             if example:
-                input_file = f"{day_str}/input_example_part_1.txt"
+                input_file = f"{day_str}/input/input_example_part_1.txt"
             else:
-                input_file = f"{day_str}/input.txt"
+                input_file = f"{day_str}/input/input.txt"
             print(f"Part 1: {day.part_one(input_file)}")
         except (AttributeError, NotImplementedError):
             print(f"{day_str}: Part one not implemented")
         try:
             if example:
-                input_file = f"{day_str}/input_example_part_2.txt"
+                input_file = f"{day_str}/input/input_example_part_2.txt"
             else:
-                input_file = f"{day_str}/input.txt"
+                input_file = f"{day_str}/input/input.txt"
             print(f"Part 2: {day.part_two(input_file)}")
         except (AttributeError, NotImplementedError):
             print(f"{day_str}: Part two not implemented")

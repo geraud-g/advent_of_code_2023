@@ -30,7 +30,7 @@ Here is an example engine schematic:
     ......755.
     ...$.*....
     .664.598..
-    
+
 
 In this schematic, two numbers are _not_ part numbers because they are not adjacent to a symbol: `114` (top right) and `58` (middle right). Every other number is adjacent to a symbol and so _is_ a part number; their sum is _`4361`_.
 
@@ -60,7 +60,7 @@ Consider the same engine schematic again:
     ......755.
     ...$.*....
     .664.598..
-    
+
 
 In this schematic, there are _two_ gears. The first is in the top left; it has part numbers `467` and `35`, so its gear ratio is `16345`. The second gear is in the lower right; its gear ratio is `451490`. (The `*` adjacent to `617` is _not_ a gear because it is only adjacent to one part number.) Adding up all of the gear ratios produces _`467835`_.
 
