@@ -21,7 +21,7 @@ def main(day: Annotated[int, typer.Argument(callback=day_callback)], example: bo
             else:
                 input_file = f"{day_str}/input/input.txt"
             print(f"Part 1: {day.part_one(input_file)}")
-        except (AttributeError, NotImplementedError):
+        except NotImplementedError:
             print(f"{day_str}: Part one not implemented")
         try:
             if example:
@@ -29,7 +29,7 @@ def main(day: Annotated[int, typer.Argument(callback=day_callback)], example: bo
             else:
                 input_file = f"{day_str}/input/input.txt"
             print(f"Part 2: {day.part_two(input_file)}")
-        except (AttributeError, NotImplementedError):
+        except NotImplementedError:
             print(f"{day_str}: Part two not implemented")
     except ImportError:
         print(f"Day {day:02d} is not available yet")
