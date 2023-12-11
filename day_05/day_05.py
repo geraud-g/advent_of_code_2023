@@ -92,7 +92,9 @@ def get_new_range(instructions_map: list[Instruction], range_ids: SeedRange) -> 
     return new_ranges_ids
 
 
-def convert_and_sort_instructions_map(instructions_map: list[Instruction]) -> list[tuple[int, int, int]]:
+def convert_and_sort_instructions_map(
+    instructions_map: list[Instruction],
+) -> list[tuple[int, int, int]]:
     """Convert instructions ranges to (start, end, destination) tuples, and return them sorted by `start`"""
     instructions_ranges = []
     for instruction in instructions_map:

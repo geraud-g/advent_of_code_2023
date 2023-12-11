@@ -1,5 +1,6 @@
 from collections.abc import Iterable
 from itertools import product
+from typing import Optional
 
 Schematic = list[list[str]]
 
@@ -32,7 +33,7 @@ def touch_symbol(schematic: Schematic, y: int, x: int) -> bool:
     return False
 
 
-def get_part_number(schematic: Schematic, y: int, x: int, delete=False) -> int | None:
+def get_part_number(schematic: Schematic, y: int, x: int, delete=False) -> Optional[None]:
     """Returns the complete number from this tile as an `int`, or `None`.
 
     A complete number is the concatenation of the digits linked to the initial tile on the x-axis.
