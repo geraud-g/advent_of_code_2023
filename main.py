@@ -1,7 +1,14 @@
 import importlib
+import os
 from typing import Annotated
 
 import typer
+
+# PyCharm doesn't support rich traceback
+if os.environ.get("TERMINAL_EMULATOR", "").startswith("JetBrains"):
+    app = typer.Typer(pretty_exceptions_enable=False)
+else:
+    app = typer.Typer()
 
 
 def day_callback(value: int):
@@ -10,6 +17,7 @@ def day_callback(value: int):
     return value
 
 
+@app.command()
 def main(day: Annotated[int, typer.Argument(callback=day_callback)], example: bool = False):
     try:
         day_str = f"day_{day:02d}"
@@ -36,4 +44,4 @@ def main(day: Annotated[int, typer.Argument(callback=day_callback)], example: bo
 
 
 if __name__ == "__main__":
-    typer.run(main)
+    app()
