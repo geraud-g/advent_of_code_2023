@@ -16,7 +16,7 @@ Each solution resides in its respective directory.
 | Day 08 |   ⭐    |   ⭐    | [Day 08](day_08) |
 | Day 09 |   ⭐    |   ⭐    | [Day 09](day_09) |
 | Day 10 |   ⭐    |        | [Day 10](day_10) |
-| Day 11 |        |        |                  |
+| Day 11 |   ⭐    |        | [Day 11](day_11) |
 | Day 12 |        |        |                  |
 | Day 13 |        |        |                  |
 | Day 14 |        |        |                  |
