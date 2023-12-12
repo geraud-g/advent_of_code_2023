@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from itertools import combinations
 
 
 @dataclass
@@ -7,53 +8,64 @@ class Point:
     x: int
 
 
-def part_one(input_file: str):
-    galaxies_map = get_galaxies_map(input_file)
-    expanded_map = expand_galaxies_map(galaxies_map)
-    galaxies = get_galaxies(expanded_map)
+def part_one(input_file: str) -> int:
+    return get_galaxies_distances_sum(input_file, 1)
+
+
+def get_galaxies_distances_sum(input_file: str, expansion_rate: int):
+    galaxies, galaxies_map = get_galaxies_and_map(input_file)
+    expanded_parts = get_expanded_parts(galaxies_map)
 
     total = 0
-    for idx, point_a in enumerate(galaxies[:-1]):
-        for point_b in galaxies[idx + 1 :]:
-            total += manhattan_distance(point_a, point_b)
+    for point_a, point_b in combinations(galaxies, 2):
+        distance = manhattan_distance(point_a, point_b)
+        distance += get_additional_expanded_distance(expanded_parts, point_a, point_b, expansion_rate)
+        total += distance
     return total
 
 
-def get_galaxies_map(input_file: str) -> list[list[bool]]:
+def get_galaxies_and_map(input_file: str) -> [list[Point], list[list[bool]]]:
+    galaxies = []
     galaxies_map = []
     with open(input_file) as f:
-        for line in f.readlines():
-            new_line = [value == "#" for value in line.strip()]
-            galaxies_map.append(new_line)
-    return galaxies_map
-
-
-def expand_galaxies_map(galaxies_map: list[list[bool]]) -> list[list[bool]]:
-    half_expanded_map = expand_map_vertically(galaxies_map)
-    # Rotate map 90 degrees clockwise
-    half_expanded_map = list(zip(*half_expanded_map[::-1]))
-    fully_expanded_map = expand_map_vertically(half_expanded_map)
-    # Rotate 90 degrees counter-clockwise
-    fully_expanded_map = list(reversed(list(zip(*fully_expanded_map))))
-    return fully_expanded_map
-
-
-def expand_map_vertically(galaxies_map: list[list[bool]]):
-    expanded_map = []
-    for line in galaxies_map:
-        expanded_map.append(line)
-        if all(not val for val in line):
-            expanded_map.append(line)
-    return expanded_map
-
-
-def get_galaxies(galaxies_map: list[list[bool]]) -> list[Point]:
-    galaxies = []
-    for y, line in enumerate(galaxies_map):
-        for x, val in enumerate(line):
-            if val:
+        lines = f.readlines()
+    for y, line in enumerate(lines):
+        new_line = []
+        for x, value in enumerate(line):
+            if value == "#":
+                new_line.append(True)
                 galaxies.append(Point(y, x))
-    return galaxies
+            else:
+                new_line.append(False)
+        galaxies_map.append(new_line)
+    return galaxies, galaxies_map
+
+
+def get_expanded_parts(galaxies_map: list[list[bool]]) -> [set[int], set[int]]:
+    empty_y_set = set()
+    empty_y_s = set()
+
+    for y, line in enumerate(galaxies_map):
+        if all(not val for val in line):
+            empty_y_set.add(y)
+
+    # Rotate map 90 degrees clockwise
+    # from https://stackoverflow.com/a/8421412
+    rotated_map = list(zip(*galaxies_map[::-1]))
+    for x, col in enumerate(rotated_map):
+        if all(not val for val in col):
+            empty_y_s.add(x)
+    return empty_y_set, empty_y_s
+
+
+def get_additional_expanded_distance(
+    expanded_parts: [set[int], set[int]], point_a: Point, point_b: Point, distance_coef: int
+) -> int:
+    min_y, max_y = sorted([point_a.y, point_b.y])
+    min_x, max_x = sorted([point_a.x, point_b.x])
+    empty_y_set = set(range(min_y, max_y + 1)) & expanded_parts[0]
+    empty_x_set = set(range(min_x, max_x + 1)) & expanded_parts[1]
+    return (len(empty_y_set) + len(empty_x_set)) * distance_coef
 
 
 def manhattan_distance(point_a: Point, point_b: Point):
@@ -61,4 +73,4 @@ def manhattan_distance(point_a: Point, point_b: Point):
 
 
 def part_two(input_file: str):
-    raise NotImplementedError
+    return get_galaxies_distances_sum(input_file, 999999)
