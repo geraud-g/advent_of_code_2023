@@ -19,7 +19,7 @@ Each solution resides in its respective directory.
 | Day 11 |   ⭐    |   ⭐    | [Day 11](day_11) |
 | Day 12 |   ⭐    |        | [Day 12](day_12) |
 | Day 13 |        |        |                  |
-| Day 14 |        |        |                  |
+| Day 14 |   ⭐    |        | [Day 14](day_14) |
 | Day 15 |        |        |                  |
 | Day 16 |        |        |                  |
 | Day 17 |        |        |                  |
