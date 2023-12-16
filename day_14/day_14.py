@@ -1,77 +1,114 @@
-from dataclasses import dataclass
-
-
-@dataclass
-class Point:
-    y: int
-    x: int
-
-    def __hash__(self):
-        return hash((self.y, self.x))
-
-    def __eq__(self, other):
-        return self.x == other.x and self.y == other.y
-
-    def __lt__(self, other):
-        return (self.y, self.x) < (other.y, other.x)
-
-
-@dataclass
 class Grid:
-    square_rocks: list[list[bool]]
+    def __init__(self, square_rocks: list[list[bool]], round_rocks: list[list[bool]], width: int, height: int):
+        self.square_rocks: list[list[bool]] = square_rocks
+        self.round_rocks: list[list[bool]] = round_rocks
+        self.width: int = width
+        self.height: int = height
 
-    def print_map(self, round_rocks):
-        for y, line in enumerate(self.square_rocks):
-            for x, val in enumerate(line):
-                if Point(y, x) in round_rocks:
+    def tilt_up(self):
+        moved = False
+        for y in range(1, self.height):
+            for x in range(self.width):
+                if self.round_rocks[y][x] and not self.round_rocks[y - 1][x] and not self.square_rocks[y - 1][x]:
+                    self.round_rocks[y][x] = False
+                    self.round_rocks[y - 1][x] = True
+                    moved = True
+        return moved
+
+    def tilt_down(self):
+        moved = False
+        for y in reversed(range(self.height - 1)):
+            for x in range(self.width):
+                if self.round_rocks[y][x] and not self.round_rocks[y + 1][x] and not self.square_rocks[y + 1][x]:
+                    self.round_rocks[y][x] = False
+                    self.round_rocks[y + 1][x] = True
+                    moved = True
+        return moved
+
+    def tilt_right(self):
+        moved = False
+        for y in range(self.height):
+            for x in reversed(range(self.width - 1)):
+                if self.round_rocks[y][x] and not self.round_rocks[y][x + 1] and not self.square_rocks[y][x + 1]:
+                    self.round_rocks[y][x] = False
+                    self.round_rocks[y][x + 1] = True
+                    moved = True
+        return moved
+
+    def tilt_left(self):
+        moved = False
+        for y in range(self.height):
+            for x in range(1, self.width):
+                if self.round_rocks[y][x] and not self.round_rocks[y][x - 1] and not self.square_rocks[y][x - 1]:
+                    self.round_rocks[y][x] = False
+                    self.round_rocks[y][x - 1] = True
+                    moved = True
+        return moved
+
+    def print_map(self):
+        for y in range(self.height):
+            for x in range(self.width):
+                if self.round_rocks[y][x]:
                     print("O", end="")
-                elif val:
+                elif self.square_rocks[y][x]:
                     print("#", end="")
                 else:
                     print(".", end="")
-            print(f"  {len(self.square_rocks) - y}")
-        print(sorted(round_rocks))
+            print()
 
 
 def part_one(input_file: str):
-    grid, round_rocks = get_grid(input_file)
-    moved = True
+    grid = get_grid(input_file)
 
-    while moved:
-        moved = False
-        for round_rock in sorted(round_rocks, key=lambda p: (p.y, p.x)):
-            if round_rock.y < 1:
-                continue
-            new_y = round_rock.y - 1
-            new_point = Point(new_y, round_rock.x)
-            if not grid.square_rocks[new_y][round_rock.x] and new_point not in round_rocks:
-                round_rocks.remove(round_rock)
-                round_rocks.add(new_point)
-                moved = True
+    while grid.tilt_up():
+        pass
 
-    grid_h = len(grid.square_rocks)
-    return sum(grid_h - round_rock.y for round_rock in round_rocks)
+    total = 0
+    for y, row in enumerate(grid.round_rocks):
+        total += (grid.height - y) * sum(1 if val else 0 for val in row)
+    return total
 
 
 def part_two(input_file: str):
+    # grid = get_grid(input_file)
+    # cycles = 1000000000
+    # remaining_cycles = cycles
+    # history = set()
     raise NotImplementedError
 
 
-def get_grid(input_file: str) -> tuple[Grid, set[Point]]:
-    round_rocks = set()
+def perform_cycle(grid: Grid):
+    while grid.tilt_up():
+        pass
+    while grid.tilt_left():
+        pass
+    while grid.tilt_down():
+        pass
+    while grid.tilt_right():
+        pass
+
+
+def get_grid(input_file: str) -> Grid:
+    round_rocks = []
     square_rocks = []
     with open(input_file) as f:
         for y, line in enumerate(f.readlines()):
             square_line = []
+            round_line = []
             for x, value in enumerate(line.strip()):
                 if value == "O":
-                    round_rocks.add(Point(y, x))
+                    round_line.append(True)
                     square_line.append(False)
                 elif value == ".":
+                    round_line.append(False)
                     square_line.append(False)
                 elif value == "#":
+                    round_line.append(False)
                     square_line.append(True)
                 else:
                     raise ValueError(f"Invalid value {value}")
             square_rocks.append(square_line)
-    return Grid(square_rocks), round_rocks
+            round_rocks.append(round_line)
+    width = len(square_rocks[0])
+    height = len(square_rocks)
+    return Grid(square_rocks, round_rocks, width, height)
